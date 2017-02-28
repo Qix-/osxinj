@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <sstream>
 #include <stdexcept>
 
 #include <mach/mach.h>
@@ -46,17 +47,19 @@ Injector::~Injector()
     }
 }
 
-void Injector::inject(pid_t pid, const char* lib)
+std::string Injector::inject(pid_t pid, const char* lib)
 {
     if (!module || !bootstrapfn)
     {
-        fprintf(stderr, "failed to inject: module:0x%X bootstrapfn:0x%X\n", module, bootstrapfn);
-        return;
+	std::stringstream ss;
+        ss << "failed to inject: module:0x" << std::hex << module << " bootstrapfn:0x" << bootstrapfn << std::endl;
+	return ss.str();
     }
     mach_error_t err = mach_inject((mach_inject_entry)bootstrapfn, lib, strlen(lib) + 1, pid, 0);
     if (err) {
-        throw std::runtime_error(mach_error_string(err));
+        return mach_error_string(err);
     }
+    return std::string();
 }
 
 pid_t Injector::getProcessByName(const char *name)

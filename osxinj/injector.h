@@ -11,7 +11,7 @@ public:
     Injector(std::string = "bootstrap.dylib");
     ~Injector();
 
-    void inject(pid_t pid, const char* lib);
+    std::string inject(pid_t pid, const char* lib);
     pid_t getProcessByName(const char *name);
 private:
     void *module;
