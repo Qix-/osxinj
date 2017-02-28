@@ -2,15 +2,18 @@
 
 #include <cstdio>
 #include <cstring>
+#include <stdexcept>
 
 #include <mach/mach.h>
 #include <mach/thread_act.h>
 #include <mach/mach_init.h>
+#include <mach/error.h>
+#include <mach/mach_error.h>
 #include <pthread.h>
 #include <dlfcn.h>
 #include <signal.h>
 #include <sys/proc_info.h>
-#include <libproc.h>    
+#include <libproc.h>
 
 Injector::Injector(std::string bootstrapPath) : module(0), bootstrapfn(0)
 {
@@ -51,6 +54,9 @@ void Injector::inject(pid_t pid, const char* lib)
         return;
     }
     mach_error_t err = mach_inject((mach_inject_entry)bootstrapfn, lib, strlen(lib) + 1, pid, 0);
+    if (err) {
+        throw std::runtime_error(mach_error_string(err));
+    }
 }
 
 pid_t Injector::getProcessByName(const char *name)
