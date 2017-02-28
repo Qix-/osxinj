@@ -1,12 +1,14 @@
 #ifndef _INJECTOR_H_
 #define _INJECTOR_H_
 
+#include <string>
+
 #include "mach_inject.h"
 
 class Injector
 {
 public:
-    Injector();
+    Injector(std::string = "bootstrap.dylib");
     ~Injector();
 
     void inject(pid_t pid, const char* lib);
