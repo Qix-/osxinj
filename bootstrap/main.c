@@ -1,6 +1,3 @@
-#include <cstdio>
-#include <cstring>
-
 #include <mach/mach.h>
 #include <mach/thread_act.h>
 #include <mach/mach_init.h>
@@ -13,12 +10,14 @@
 #include <mach/error.h>
 #include <mach/vm_types.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 
 #define DLLEXPORT __attribute__((visibility("default")))
 
-extern "C" void __pthread_set_self(void*);
+void __pthread_set_self(void*);
 
-extern "C" void bootstrap(ptrdiff_t offset, void *param, size_t psize, void *dummy) DLLEXPORT;
+void bootstrap(ptrdiff_t offset, void *param, size_t psize, void *dummy) DLLEXPORT;
 
 void *loaderThread(void *patch_bundle)
 {

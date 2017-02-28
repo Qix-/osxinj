@@ -12,7 +12,7 @@ set_source_files_properties(osxinj/mach_inject.c PROPERTIES LANGUAGE C)
 # 'osxinj_app'
 add_executable(osxinj osxinj/mach_inject.c osxinj/injector.cpp osxinj/main.cpp)
 
-add_library(bootstrap SHARED bootstrap/main.cpp)
+add_library(bootstrap SHARED bootstrap/main.c)
 set_target_properties(bootstrap PROPERTIES PREFIX "")
 
 add_executable(testapp testapp/main.cpp)
